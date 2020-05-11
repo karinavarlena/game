@@ -49,7 +49,7 @@ class FighterService {
   class FighterView extends View {
     constructor(fighter, handleClick) {
       super();
-  
+        
       this.createFighter(fighter, handleClick);
     }
   
@@ -85,7 +85,7 @@ class FighterService {
   class FightersView extends View {
     constructor(fighters) {
       super();
-      
+      this.handleClick = this.handleFighterClick.bind(this);
       this.createFighters(fighters);
     }
   
@@ -93,7 +93,7 @@ class FighterService {
   
     createFighters(fighters) {
       const fighterElements = fighters.map(fighter => {
-        const fighterView = new FighterView(fighter, this.handleFighterClick);
+        const fighterView = new FighterView(fighter, this.handleClick);
         return fighterView.element;
       });
   
