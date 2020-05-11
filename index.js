@@ -8,8 +8,9 @@ async function startApp() {
       
       const endpoint = 'repos/sahanr/street-fighter/contents/fighters.json';
       const fighters = await callApi(endpoint, 'GET');
-      
-      rootElement.innerText = getFightersNames(fighters);
+      const fightersElement = createFighters(fighters);
+
+      rootElement.appendChild(fightersElement);
     } catch (error) {
       console.warn(error);
       rootElement.innerText = 'Failed to load data';
