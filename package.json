@@ -1,0 +1,25 @@
+{
+  "name": "street-fighter",
+  "version": "1.0.0",
+  "description": "Ruy's browser game. To live is to fight, and to fight is to live.",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel index.js -d dist -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karinavarlena/game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/karinavarlena/game/issues"
+  },
+  "homepage": "https://github.com/karinavarlena/game#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/preset-env": "^7.9.6"
+  }
+}
