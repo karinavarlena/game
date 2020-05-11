@@ -2,17 +2,13 @@ const API_URL = 'https://api.github.com/';
 const rootElement = document.getElementById('root');
 const loadingElement = document.getElementById('loading-overlay');
 
-const startApp = function() {
-  const endpoint = 'repos/sahanr/street-fighter/contents/fighters.json';
-  const fightersPromise = callApi(endpoint, 'GET');
-  
-  fightersPromise.then(fighters => {
-    const fightersNames = getFightersNames(fighters);
-    rootElement.innerText = fightersNames;
-  });	
+async function startApp() {
+    const endpoint = 'repos/sahanr/street-fighter/contents/fighters.json';
+    const fighters = await callApi(endpoint, 'GET');
+    rootElement.innerText = getFightersNames(fighters);
 }
 
-function callApi(endpoind, method) {
+function callApi(endpoind, method = 'GET') {
   const url = API_URL + endpoind;
   const options = {
     method
