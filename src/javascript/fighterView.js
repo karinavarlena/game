@@ -6,7 +6,11 @@ class FighterView extends View {
         
       this.createFighter(fighter, handleClick);
     }
-  
+    
+    createFighterPreview() {
+
+    }
+
     createFighter(fighter, handleClick) {
       const { name, source } = fighter;
       const nameElement = this.createName(name);
