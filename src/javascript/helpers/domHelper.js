@@ -10,3 +10,4 @@ export function createElement({ tagName, className, attributes = {} }) {
 
   return element;
 }
+

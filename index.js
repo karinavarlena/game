@@ -1,4 +1,4 @@
 import App from "./src/javascript/app";
-import './src/styles/style.css';
+import './src/styles/styles.css';
 
 new App();

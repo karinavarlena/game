@@ -3,7 +3,7 @@ import { fightersDetails, fighters } from './mockData';
 const API_URL = 'https://api.github.com/repos/binary-studio-academy/stage-2-es6-for-everyone/contents/resources/api/';
 const useMockAPI = true;
 
-async function callApi(endpoint, method) {
+async function callApi(endpoint, method = 'GET') {
   const url = API_URL + endpoint;
   const options = {
     method,

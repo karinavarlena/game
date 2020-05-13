@@ -1,12 +1,14 @@
 import { createElement } from '../helpers/domHelper';
 import { createFightersSelector } from './fighterSelector';
 
+export const selectFighter = new createFightersSelector(); 
+
 export function createFighters(fighters) {
-  const selectFighter = createFightersSelector();
-  const container = createElement({ tagName: 'div', className: 'fighters___root' });
+  const { fighterHandle } = selectFighter;
+  const container = createElement ({ tagName: 'div', className: 'fighters___root' });
   const preview = createElement({ tagName: 'div', className: 'preview-container___root' });
   const fightersList = createElement({ tagName: 'div', className: 'fighters___list' });
-  const fighterElements = fighters.map((fighter) => createFighter(fighter, selectFighter));
+  const fighterElements = fighters.map((fighter) => createFighter(fighter, selectFighter.fighterHandle));
 
   fightersList.append(...fighterElements);
   container.append(preview, fightersList);

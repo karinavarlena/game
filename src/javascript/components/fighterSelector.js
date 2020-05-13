@@ -2,18 +2,18 @@ import { createElement } from '../helpers/domHelper';
 import { renderArena } from './arena';
 import versusImg from '../../../resources/versus.png';
 import { createFighterPreview } from './fighterPreview';
+import { fighterService } from '../services/fightersService';
 
-export function createFightersSelector() {
-  let selectedFighters = [];
+export class createFightersSelector {
+  selectedFighters = [];
+  selectedIndex = 0;
 
-  return async (event, fighterId) => {
+  fighterHandle = async (event, fighterId) => {
     const fighter = await getFighterInfo(fighterId);
-    const [playerOne, playerTwo] = selectedFighters;
-    const firstFighter = playerOne ?? fighter;
-    const secondFighter = Boolean(playerOne) ? playerTwo ?? fighter : playerTwo;
-    selectedFighters = [firstFighter, secondFighter];
+    this.selectedFighters.splice(this.selectedIndex, 1, fighter);
+    this.selectedIndex = 1;
 
-    renderSelectedFighters(selectedFighters);
+    renderSelectedFighters(this.selectedFighters);
   };
 }
 
@@ -21,6 +21,18 @@ const fighterDetailsMap = new Map();
 
 export async function getFighterInfo(fighterId) {
   // get fighter info from fighterDetailsMap or from service and write it to fighterDetailsMap
+  if (fighterDetailsMap.has(fighterId)) {
+    return fighterDetailsMap.get(fighterId);
+  }
+  
+  try {
+    const fighterInfo = await fighterService.getFighterDetails(fighterId);
+    fighterDetailsMap.set(fighterId, fighterInfo);
+    return fighterInfo;
+  } catch(err) {
+    throw err;
+  }
+
 }
 
 function renderSelectedFighters(selectedFighters) {
