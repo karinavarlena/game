@@ -11,8 +11,12 @@ class FighterService {
       }
     }
 
-    async getFighterDetails(_id) {
+    getFighterInfo() {
 
+    }
+    
+    async getFighterDetails(_id) {
+        return _id;
     }
 }
   
