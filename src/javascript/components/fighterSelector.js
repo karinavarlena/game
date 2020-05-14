@@ -10,7 +10,7 @@ export class createFightersSelector {
 
   fighterHandle = async (event, fighterId) => {
     const fighter = await getFighterInfo(fighterId);
-    this.selectedFighters.splice(this.selectedIndex, 1, fighter);
+    this.selectedFighters.splice(this.selectedIndex, 1, Object.assign({}, fighter));
     this.selectedIndex = 1;
 
     renderSelectedFighters(this.selectedFighters);

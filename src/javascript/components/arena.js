@@ -25,8 +25,10 @@ function createArena(selectedFighters) {
   const arena = createElement({ tagName: 'div', className: 'arena___root' });
   const healthIndicators = createHealthIndicators(...selectedFighters);
   const fighters = createFighters(...selectedFighters);
+  const attack = createAttack();
+  const defense = createDefense();
   
-  arena.append(healthIndicators, fighters);
+  arena.append(healthIndicators, fighters, attack, defense);
   return arena;
 }
 
@@ -35,7 +37,7 @@ function createHealthIndicators(leftFighter, rightFighter) {
   const versusSign = createElement({ tagName: 'div', className: 'arena___versus-sign' });
   const leftFighterIndicator = createHealthIndicator(leftFighter, 'left');
   const rightFighterIndicator = createHealthIndicator(rightFighter, 'right');
-
+  
   healthIndicators.append(leftFighterIndicator, versusSign, rightFighterIndicator);
   return healthIndicators;
 }
@@ -50,6 +52,50 @@ function createHealthIndicator(fighter, position) {
   fighterName.innerText = name;
   indicator.append(bar);
   container.append(fighterName, indicator);
+
+  return container;
+}
+
+function createAttack() {
+  const container = createElement({ tagName: 'div', className: 'arena___attack-container' });
+  const containerLeft = createElement({ tagName: 'div', className: 'arena___attack-left' });
+  const containerRight = createElement({ tagName: 'div', className: 'arena___attack-right' });
+
+  const attributes = { 
+    src: './resources/hit.png', 
+    title: 'attack',
+    alt: 'attack' 
+  };
+
+  const imgElement = createElement({
+    tagName: 'img',
+    className: 'arena___attack-img',
+    attributes,
+  });
+
+  containerRight.append(imgElement.cloneNode(true));
+  containerLeft.append(imgElement);
+  container.append(containerLeft, containerRight);
+
+  return container;
+}
+
+function createDefense() {
+  const container = createElement({ tagName: 'div', className: 'arena___defense-container' });
+
+  const attributes = { 
+    src: './resources/shield.png', 
+    title: 'defense',
+    alt: 'defense' 
+  };
+
+  const imgElement = createElement({
+    tagName: 'img',
+    className: 'arena___defense-img',
+    attributes,
+  });
+
+  container.append(imgElement.cloneNode(true), imgElement);
 
   return container;
 }

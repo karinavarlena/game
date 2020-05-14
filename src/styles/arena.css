@@ -61,3 +61,75 @@
   width: 100%;
   background-color: #ebd759;
 }
+
+.arena___defense-container,
+.arena___attack-container {
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+}
+
+.arena___defense-container {
+  top: 40%;
+}
+
+.arena___attack-right { 
+  transform: rotateY(180deg); 
+  opacity: 0;
+}
+
+.arena___defense-img {
+  height: 200px;
+}
+
+.arena___defense-img, 
+.arena___attack-left {
+  opacity: 0;
+}
+
+.arena___defense-img--defense {
+  animation: defense 0.6s backwards; 
+}
+
+.arena___attack-right--attack {
+  animation: attackRight 0.6s backwards;
+}
+
+.arena___attack-left--attack {
+  animation: attackLeft 0.6s backwards;
+}
+
+.arena___attack-img {
+  width: 60px;
+  height: 70px;
+  transform: rotateZ(45deg); 
+}
+
+@keyframes attackLeft {
+  1% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(50vw, -150px); 
+    opacity: 1;
+  }
+}
+
+@keyframes defense {
+  1%, 100% {
+    opacity: 1;
+  }
+}
+
+@keyframes attackRight {
+  1% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(180deg) translate(50vw, -150px); 
+    opacity: 1;
+  }
+}

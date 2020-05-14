@@ -29,8 +29,7 @@ export function createFighterPreview(fighter, position) {
 function createFighterIcons(fighter) {
 
   const { attack, defense, health, source, name } = fighter;
-  console.log(fighter);
-
+  
   const iconsSrc = {
     attack: './resources/hand.svg', 
     defense: './resources/security.svg',
