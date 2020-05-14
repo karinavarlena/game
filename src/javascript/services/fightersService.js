@@ -1,19 +1,30 @@
-import { callApi } from "../helpers/apiHelper";
+import { callApi } from '../helpers/apiHelper';
+
 class FighterService {
-    async getFighters() {
-      try {
-        const endpoint = 'repos/sahanr/street-fighter/contents/fighters.json';
-        const apiResult = await callApi(endpoint, 'GET');
-  
-        return JSON.parse(atob(apiResult.content));
-      } catch (error) {
-        throw error;
-      }
-    }
+  async getFighters() {
+    try {
+      const endpoint = 'fighters.json';
+      const apiResult = await callApi(endpoint, 'GET');
 
-    async getFighterDetails(_id) {
-
+      return apiResult;
+    } catch (error) {
+      throw error;
     }
+  }
+
+  async getFighterDetails(id) {
+    // todo: implement this method
+    // endpoint - `details/fighter/${id}.json`;
+    
+    try {
+      const endpoint = `details/fighter/${id}.json`;
+      const details = await callApi(endpoint);
+
+      return details;
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 }
-  
+
 export const fighterService = new FighterService();

@@ -1,0 +1,144 @@
+.arena___root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-image: url('../../resources/arena.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.arena___battlefield {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 60px;
+}
+
+.arena___right-fighter img {
+  transform: scaleX(-1);
+}
+
+.arena___fighter img {
+  height: 480px;
+}
+
+.arena___fight-status {
+  display: flex;
+  margin: 30px;
+  justify-content: center;
+}
+
+.arena___fighter-name {
+  color: black;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  font-size: 26px;
+  font-family: 'Arial Black';
+  font-weight: 700;
+}
+
+.arena___fighter-indicator {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 30px;
+}
+
+.arena___health-indicator {
+  width: 100%;
+  height: 25px;
+  border: 2px solid;
+  border-radius: 5px;
+  margin: 0 10px;
+  overflow: hidden;
+}
+
+.arena___health-bar {
+  height: 100%;
+  width: 100%;
+  background-color: #ebd759;
+}
+
+.arena___defense-container,
+.arena___criticattack-container,
+.arena___attack-container {
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+}
+
+.arena___defense-container {
+  top: 40%;
+}
+
+.arena___criticrightattack,
+.arena___rightattack { 
+  transform: rotateY(180deg); 
+  opacity: 0;
+}
+
+.arena___defense-img {
+  height: 200px;
+}
+
+.arena___defense-img,
+.arena___criticleftattack, 
+.arena___leftattack {
+  opacity: 0;
+}
+
+.arena___defense-img--defense {
+  animation: defense 0.6s backwards; 
+}
+
+.arena___rightattack--attack,
+.arena___criticrightattack--attack {
+  animation: attackRight 0.6s backwards;
+}
+
+.arena___leftattack--attack,
+.arena___criticleftattack--attack {
+  animation: attackLeft 0.6s backwards;
+}
+
+.arena___criticattack-img {
+  width: 60px;
+}
+
+.arena___attack-img {
+  width: 60px;
+  height: 70px;
+  transform: rotateZ(45deg); 
+}
+
+@keyframes attackLeft {
+  1% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(50vw, -150px); 
+    opacity: 1;
+  }
+}
+
+@keyframes defense {
+  1%, 100% {
+    opacity: 1;
+  }
+}
+
+@keyframes attackRight {
+  1% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(180deg) translate(50vw, -150px); 
+    opacity: 1;
+  }
+}
