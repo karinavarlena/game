@@ -14,8 +14,8 @@ export function renderArena(selectedFighters) {
   // - start the fight
   // - when fight is finished show winner
   try {
-    const winner = await fight(...selectedFighters);
-    showWinnerModal(winner);
+    fight(...selectedFighters)
+    .then(winner => showWinnerModal(winner));
   } catch(error) {
     console.error(error);
   }
