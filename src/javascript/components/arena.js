@@ -26,9 +26,10 @@ function createArena(selectedFighters) {
   const healthIndicators = createHealthIndicators(...selectedFighters);
   const fighters = createFighters(...selectedFighters);
   const attack = createAttack();
+  const criticAttack = createAttack('critic');
   const defense = createDefense();
   
-  arena.append(healthIndicators, fighters, attack, defense);
+  arena.append(healthIndicators, fighters, attack, defense, criticAttack);
   return arena;
 }
 
@@ -56,20 +57,20 @@ function createHealthIndicator(fighter, position) {
   return container;
 }
 
-function createAttack() {
-  const container = createElement({ tagName: 'div', className: 'arena___attack-container' });
-  const containerLeft = createElement({ tagName: 'div', className: 'arena___attack-left' });
-  const containerRight = createElement({ tagName: 'div', className: 'arena___attack-right' });
+function createAttack(critic = '') {
+  const container = createElement({ tagName: 'div', className: `arena___${critic}attack-container` });
+  const containerLeft = createElement({ tagName: 'div', className: `arena___${critic}leftattack` });
+  const containerRight = createElement({ tagName: 'div', className: `arena___${critic}rightattack` });
 
   const attributes = { 
-    src: './resources/hit.png', 
-    title: 'attack',
-    alt: 'attack' 
+    src: `./resources/${critic}hit.png`, 
+    title: `${critic}attack`,
+    alt: `${critic}attack` 
   };
 
   const imgElement = createElement({
     tagName: 'img',
-    className: 'arena___attack-img',
+    className: `arena___${critic}attack-img`,
     attributes,
   });
 

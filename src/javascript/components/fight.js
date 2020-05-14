@@ -1,73 +1,102 @@
 import { controls } from '../../constants/controls';
+import { getKeyByValue } from '../helpers/domHelper';
 
 export async function fight(firstFighter, secondFighter) {
-  const keysCodes = new Set(Object.values(controls)
-                              .reduce((result, val) => {
-                                return typeof val === 'object'?
-                                  [...result, ...val]: 
-                                  [...result, val]; 
-                              }, []));
-
   const pressedKeys = new Set();
-  const attackRight = document.getElementsByClassName('arena___attack-right')[0];
-  const attackLeft = document.getElementsByClassName('arena___attack-left')[0];
+
+  const attackElement = {
+    'right': document.getElementsByClassName('arena___rightattack')[0],
+    'left': document.getElementsByClassName('arena___leftattack')[0],
+    'criticright': document.getElementsByClassName('arena___criticrightattack')[0],
+    'criticleft': document.getElementsByClassName('arena___criticleftattack')[0]
+  }
+
   const [defenceLeft, defenceRight] = document.getElementsByClassName('arena___defense-img');
-  const healthLeftPercent = firstFighter.health/100;
-  const healthRightPercent = secondFighter.health/100;
-  const healthLeftIndicator = document.getElementById('left-fighter-indicator');
-  const healthRightIndicator = document.getElementById('right-fighter-indicator');
   
-  return new Promise((resolve) => {
-    // resolve the promise with the winner when fight is over
+  const criticAttackTimer = {
+    'leftCritic': false,
+    left() {
+        this.leftCritic = false;
+        setTimeout(() => this.leftCritic = true, 10000)
+    },
+    'rightCritic': false,
+    right() {
+        this.rightCritic = false;
+        setTimeout(() => this.rightCritic = true, 10000)
+    },
+  }
 
-    document.addEventListener('keydown', (e) => {
-      //if(!keysCodes.has(e.code)) return;
-      pressedKeys.add(e.code);
-      console.log(e.code === 'KeyA');
+  const healthPercent = {
+    'left': firstFighter.health/100,
+    'right': secondFighter.health/100
+  }
+  const healthIndicator = {
+    'left': document.getElementById('left-fighter-indicator'),
+    'right': document.getElementById('right-fighter-indicator')
+  }
 
-      if(e.code === 'KeyA' && !pressedKeys.has('KeyL')) {
-        
-        console.log(secondFighter.health, firstFighter.health);
-        secondFighter.health -= getDamage(firstFighter, secondFighter);
-        secondFighter.health = secondFighter.health > 0? secondFighter.health : 0;
-        attackLeft.classList.add('arena___attack-left--attack'); 
-        healthRightIndicator.style.width = `${Math.round(secondFighter.health / healthRightPercent)}%`;
-      
-      } else if(e.code === 'KeyJ' && !pressedKeys.has('KeyD')) {
-        
-        console.log(secondFighter.health, firstFighter.health);
-        firstFighter.health -= getDamage(secondFighter, firstFighter);
-        firstFighter.health = firstFighter.health > 0? firstFighter.health : 0;
-        console.log(secondFighter.health, firstFighter.health);
-        attackRight.classList.add('arena___attack-right--attack');
-        healthLeftIndicator.style.width = `${Math.round(firstFighter.health / healthLeftPercent)}%`;
-
-      } else if (e.code === 'KeyD') {
-        defenceLeft.classList.add('arena___defense-img--defense');
-      } else if(e.code === 'KeyL') {
-        defenceRight.classList.add('arena___defense-img--defense');
+  function fire(firstFighter, secondFighter, cls) {
+    const coff = cls.indexOf('critic') === -1? 1: 2;
+    setHealth(secondFighter, firstFighter, coff);
+    attackElement[cls].classList.add(`arena___${cls}attack--attack`); 
+    const anotherCls = cls.indexOf('left') === -1? 'left': 'right';
+    healthIndicator[anotherCls].style.width = `${Math.round(secondFighter.health / healthPercent[anotherCls])}%`;
+  }
+  
+  function setHealth(firstFighter, secondFighter, coff=1) {
+    firstFighter.health -= coff*getDamage(secondFighter, firstFighter);
+    firstFighter.health = firstFighter.health > 0? firstFighter.health : 0;
+  }
+  
+  const config = {
+    PlayerOneAttack: () => !pressedKeys.has(controls.PlayerTwoBlock) && fire(firstFighter, secondFighter, 'left'),
+    PlayerOneBlock: () => defenceLeft.classList.add('arena___defense-img--defense'),
+    PlayerTwoAttack: () =>  !pressedKeys.has(controls.PlayerOneBlock) && fire(secondFighter, firstFighter, 'right'),
+    PlayerTwoBlock: () => defenceRight.classList.add('arena___defense-img--defense'),
+    PlayerOneCriticalHitCombination: () => {
+      if(criticAttackTimer.leftCritic) {
+        fire(firstFighter, secondFighter, 'criticleft');
+        criticAttackTimer.left();
       }
+    },
+    PlayerTwoCriticalHitCombination: () => {
+      if(criticAttackTimer.rightCritic) {
+        fire(secondFighter, firstFighter, 'criticright')
+        criticAttackTimer.right();
+      }
+    }
+  }
+
+  return new Promise((resolve) => {
+    criticAttackTimer.right();
+    criticAttackTimer.left();
+    // resolve the promise with the winner when fight is over
+    document.addEventListener('keydown', (e) => {
+      if(pressedKeys.has(e.code)) return;
+      pressedKeys.add(e.code);
+
+      controls.PlayerOneCriticalHitCombination.every(elem => pressedKeys.has(elem)) && config.PlayerOneCriticalHitCombination();
+
+      controls.PlayerTwoCriticalHitCombination.every(elem => pressedKeys.has(elem)) && config.PlayerTwoCriticalHitCombination();
+
+      const func = config[getKeyByValue(controls, e.code)];
+      func && func();
+
+      !firstFighter.health && resolve(secondFighter);
+      !secondFighter.health && resolve(firstFighter);
 
     });
 
     [defenceLeft, defenceRight].forEach(element => {
       element.addEventListener("animationend", () => element.classList.remove('arena___defense-img--defense'));
     });
-    attackLeft.addEventListener("animationend", () => attackLeft.classList.remove('arena___attack-left--attack'));
-    attackRight.addEventListener("animationend", () => attackRight.classList.remove('arena___attack-right--attack'));
 
-    document.addEventListener('keyup', (e) => {
-      pressedKeys.delete(e.code);
-
-      switch(e.code) { 
-      }
-     
+    ['left', 'right', 'criticleft', 'criticright'].forEach(cls => {
+      attackElement[cls].addEventListener("animationend", () => attackElement[cls].classList.remove(`arena___${cls}attack--attack`));
     });
+
+    document.addEventListener('keyup', (e) => pressedKeys.delete(e.code));
   });
-}
-
-function firstFighterAttack(code) {
-
 }
 
 export function getDamage(attacker, defender) {

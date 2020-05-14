@@ -63,6 +63,7 @@
 }
 
 .arena___defense-container,
+.arena___criticattack-container,
 .arena___attack-container {
   display: flex;
   justify-content: space-around;
@@ -76,7 +77,8 @@
   top: 40%;
 }
 
-.arena___attack-right { 
+.arena___criticrightattack,
+.arena___rightattack { 
   transform: rotateY(180deg); 
   opacity: 0;
 }
@@ -85,8 +87,9 @@
   height: 200px;
 }
 
-.arena___defense-img, 
-.arena___attack-left {
+.arena___defense-img,
+.arena___criticleftattack, 
+.arena___leftattack {
   opacity: 0;
 }
 
@@ -94,12 +97,18 @@
   animation: defense 0.6s backwards; 
 }
 
-.arena___attack-right--attack {
+.arena___rightattack--attack,
+.arena___criticrightattack--attack {
   animation: attackRight 0.6s backwards;
 }
 
-.arena___attack-left--attack {
+.arena___leftattack--attack,
+.arena___criticleftattack--attack {
   animation: attackLeft 0.6s backwards;
+}
+
+.arena___criticattack-img {
+  width: 60px;
 }
 
 .arena___attack-img {
